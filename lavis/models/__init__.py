@@ -167,7 +167,7 @@ def load_preprocess(config):
     return vis_processors, txt_processors
 
 
-def load_model_and_preprocess(name, model_type, is_eval=False, device="cpu"):
+def load_model_and_preprocess(name, model_type, is_eval=False, device="cpu", low_mem=False):
     """
     Load model and its related preprocessors.
 
@@ -211,8 +211,11 @@ def load_model_and_preprocess(name, model_type, is_eval=False, device="cpu"):
 
     if device == "cpu":
         model = model.float()
+    
+    if not low_mem:
+        model.to(device)
 
-    return model.to(device), vis_processors, txt_processors
+    return model, vis_processors, txt_processors
 
 
 class ModelZoo:
